@@ -1,0 +1,59 @@
+/* Felles stil for alle sidene. Fargene er variabler; mørkt tema overstyrer bare dem. */
+:root {
+  --bg: #f4f2ee;
+  --kort: #ffffff;
+  --tekst: #1d1f23;
+  --dempet: #5d6169;
+  --linje: #dcd8d0;
+  --aksent: #0b5fff;
+  --kode-bg: #ebe8e1;
+  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
+  --brodtekst: system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14161a; --kort: #1d2025; --tekst: #eceae5; --dempet: #a2a6ad; --linje: #2e3239; --aksent: #6c9bff; --kode-bg: #262a31;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14161a; --kort: #1d2025; --tekst: #eceae5; --dempet: #a2a6ad; --linje: #2e3239; --aksent: #6c9bff; --kode-bg: #262a31;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 16px; }
+body { margin: 0; background: var(--bg); color: var(--tekst); font: 17px/1.5 var(--brodtekst); }
+main { max-width: 680px; margin: 0 auto; padding: 32px 16px 56px; }
+h1 { font: 700 44px/1 var(--display); letter-spacing: .01em; margin: 0 0 8px; text-wrap: balance; text-transform: uppercase; }
+h2 { font: 700 26px/1.1 var(--display); letter-spacing: .02em; margin: 0 0 6px; text-transform: uppercase; text-wrap: balance; }
+h3 { font: 600 17px/1.3 var(--brodtekst); margin: 18px 0 6px; }
+p { margin: 0 0 12px; }
+ul.liste { margin: 0 0 12px; padding-left: 20px; }
+ul.liste li { margin: 0 0 4px; }
+.ingress { color: var(--dempet); margin: 0 0 28px; max-width: 52ch; }
+.kortliste { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.kortliste > li, section.app, .boks { background: var(--kort); border: 1px solid var(--linje); border-radius: 10px; padding: 16px; }
+section.app { margin: 0 0 16px; }
+.lenker { display: flex; flex-wrap: wrap; gap: 8px; }
+a { color: var(--aksent); }
+.knapp { font-weight: 600; text-decoration: none; padding: 10px 14px; min-height: 44px; display: inline-flex; align-items: center; border: 1px solid var(--aksent); border-radius: 8px; }
+.knapp.sekundaer { border-color: var(--linje); color: var(--dempet); font-weight: 500; }
+.knapp.fylt { background: var(--aksent); color: var(--bg); }
+a:focus-visible { outline: 3px solid var(--aksent); outline-offset: 2px; }
+code { font: 14px var(--mono); background: var(--kode-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+.tabell { overflow-x: auto; margin: 0 0 12px; }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--linje); vertical-align: top; }
+th { color: var(--dempet); font-weight: 600; white-space: nowrap; }
+.merke { display: inline-block; font-size: 13px; color: var(--dempet); border: 1px solid var(--linje); border-radius: 999px; padding: 1px 9px; margin: 0 6px 6px 0; }
+.innhold { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 28px; padding: 0; list-style: none; }
+.innhold a { text-decoration: none; padding: 8px 12px; min-height: 44px; display: inline-flex; align-items: center; border: 1px solid var(--linje); border-radius: 8px; color: var(--tekst); }
+.diagram { width: 100%; height: auto; display: block; margin: 8px 0 4px; }
+.diagram rect { fill: var(--kort); stroke: var(--linje); }
+.diagram rect.aksent { stroke: var(--aksent); }
+.diagram text { fill: var(--tekst); font: 14px var(--brodtekst); }
+.diagram text.liten { fill: var(--dempet); font-size: 12px; }
+.diagram path { stroke: var(--dempet); fill: none; stroke-width: 1.5; }
+.tilbake { display: inline-flex; align-items: center; min-height: 44px; margin-bottom: 8px; text-decoration: none; font-weight: 600; }
+footer { margin-top: 28px; color: var(--dempet); font-size: 14px; }

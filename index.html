@@ -4,108 +4,73 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Runes hobbyprosjekter</title>
-<style>
-/* Layout: én smal kolonne, ett kort per prosjekt, to lenker per kort. */
-:root {
-  --bg: #f4f2ee;
-  --kort: #ffffff;
-  --tekst: #1d1f23;
-  --dempet: #5d6169;
-  --linje: #dcd8d0;
-  --aksent: #0b5fff;
-  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
-  --brodtekst: system-ui, -apple-system, "Segoe UI", sans-serif;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #14161a; --kort: #1d2025; --tekst: #eceae5; --dempet: #a2a6ad; --linje: #2e3239; --aksent: #6c9bff;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #14161a; --kort: #1d2025; --tekst: #eceae5; --dempet: #a2a6ad; --linje: #2e3239; --aksent: #6c9bff;
-  color-scheme: dark;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--tekst); font: 17px/1.5 var(--brodtekst); }
-main { max-width: 640px; margin: 0 auto; padding: 32px 16px 56px; }
-h1 { font: 700 44px/1 var(--display); letter-spacing: .01em; margin: 0 0 8px; text-wrap: balance; text-transform: uppercase; }
-.ingress { color: var(--dempet); margin: 0 0 28px; max-width: 52ch; }
-ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-li { background: var(--kort); border: 1px solid var(--linje); border-radius: 10px; padding: 16px; }
-h2 { font: 700 24px/1.1 var(--display); letter-spacing: .02em; margin: 0 0 6px; text-transform: uppercase; }
-p { margin: 0 0 12px; }
-.lenker { display: flex; flex-wrap: wrap; gap: 8px; }
-a { color: var(--aksent); font-weight: 600; text-decoration: none; padding: 10px 14px; min-height: 44px; display: inline-flex; align-items: center; border: 1px solid var(--aksent); border-radius: 8px; }
-a.sekundaer { border-color: var(--linje); color: var(--dempet); font-weight: 500; }
-a:focus-visible { outline: 3px solid var(--aksent); outline-offset: 2px; }
-footer { margin-top: 28px; color: var(--dempet); font-size: 14px; }
-</style>
+<link rel="stylesheet" href="stil.css">
 </head>
 <body>
 <main>
   <h1>Hobbyprosjekter</h1>
-  <p class="ingress">Alt jeg bygger på si. Trykk «Åpne» for å bruke det, «Kode» for å se hvordan det er laget.</p>
-  <ul>
+  <p class="ingress">Alt jeg bygger på si. «Åpne» bruker det, «Guide» forklarer hvordan det er bygget og hvilke API-er det bruker, «Kode» viser koden.</p>
+  <p><a class="knapp fylt" href="arkitektur.html">Arkitektur og guider</a></p>
+  <ul class="kortliste">
     <li>
       <h2>Orgit</h2>
       <p>Organiseringsapp for selskaper: oppgaver, gjesteliste, bordplassering, invitasjoner og enkle bordkort. Viser hvem som har sagt ja og hvem som har allergier.</p>
-      <div class="lenker"><a href="https://orgit.netlify.app">Åpne</a><a class="sekundaer" href="https://github.com/runevangen/orgit">Kode</a></div>
+      <div class="lenker"><a class="knapp" href="https://orgit.netlify.app">Åpne</a><a class="knapp sekundaer" href="arkitektur.html#orgit">Guide</a><a class="knapp sekundaer" href="https://github.com/runevangen/orgit">Kode</a></div>
     </li>
     <li>
       <h2>Dagslogg</h2>
-      <p>Daglig logg. Beskrivelse kommer.</p>
-      <div class="lenker"><a href="https://dagslogg.netlify.app">Åpne</a></div>
+      <p>Logg for mat, protein og vekt. Skriv hva du spiste eller ta bilde, så fyller KI inn kcal og protein.</p>
+      <div class="lenker"><a class="knapp" href="https://dagslogg.netlify.app">Åpne</a><a class="knapp sekundaer" href="arkitektur.html#dagslogg">Guide</a></div>
     </li>
     <li>
       <h2>Ultimate Pizza</h2>
-      <p>Pizzacoach som lager en bakeplan for deigen din, med tider, mengder og en lenke som legger planen i kalenderen.</p>
-      <div class="lenker"><a href="https://ultimatepizza.netlify.app">Åpne</a><a class="sekundaer" href="https://github.com/runevangen/pizzame">Kode</a></div>
+      <p>Pizzacoach som lager en bakeplan for deigen din, med tider, mengder og en lenke som legger planen i kalenderen. Har også en MCP-server, så Claude, ChatGPT og andre kan planlegge pizza for deg.</p>
+      <div class="lenker"><a class="knapp" href="https://ultimatepizza.netlify.app">Åpne</a><a class="knapp sekundaer" href="arkitektur.html#pizza">Guide</a><a class="knapp sekundaer" href="arkitektur.html#mcp">MCP</a><a class="knapp sekundaer" href="https://github.com/runevangen/pizzame">Kode</a></div>
     </li>
     <li>
       <h2>Sportsbibelen-appen</h2>
       <p>Nyheter fra sportsbibelen.no med fotballmodul: tabeller, kamper, puber som viser kampen, og en sportsquiz.</p>
-      <div class="lenker"><a href="https://app.sportsbibelen.no">Åpne</a></div>
+      <div class="lenker"><a class="knapp" href="https://app.sportsbibelen.no">Åpne</a><a class="knapp sekundaer" href="arkitektur.html#sportsbibelen">Guide</a></div>
     </li>
     <li>
       <h2>Tons of Rock</h2>
-      <p>Side om rockfestivalen Tons of Rock.</p>
-      <div class="lenker"><a href="https://tonsofrock.netlify.app">Åpne</a><a class="sekundaer" href="https://github.com/runevangen/tonsofrock">Kode</a></div>
-    </li>
-    <li>
-      <h2>Roskilde</h2>
-      <p>Prosjekt om Roskilde-festivalen.</p>
-      <div class="lenker"><a href="https://github.com/runevangen/Roskilde">Kode</a></div>
-    </li>
-    <li>
-      <h2>C64-scroller</h2>
-      <p>Demo av en scroller i Commodore 64-stil.</p>
-      <div class="lenker"><a href="https://c64scroller.netlify.app">Åpne</a><a class="sekundaer" href="https://github.com/runevangen/c64scrollerdemo">Kode</a></div>
+      <p>Festivalapp for en vennegjeng: program, favoritter, venner, kart og posisjon på tribunen.</p>
+      <div class="lenker"><a class="knapp" href="https://tonsofrock.netlify.app">Åpne</a><a class="knapp sekundaer" href="arkitektur.html#tonsofrock">Guide</a><a class="knapp sekundaer" href="https://github.com/runevangen/tonsofrock">Kode</a></div>
     </li>
     <li>
       <h2>Bedre liv</h2>
-      <p>Beskrivelse kommer.</p>
-      <div class="lenker"><a href="https://bedreliv.netlify.app">Åpne</a><a class="sekundaer" href="https://github.com/runevangen/BedreLiv">Kode</a></div>
+      <p>Styrkelogg for et 10-minutters manualprogram: fem øvelser, vekt og reps per økt, og sammenlikning mot forrige gang.</p>
+      <div class="lenker"><a class="knapp" href="https://bedreliv.netlify.app">Åpne</a><a class="knapp sekundaer" href="arkitektur.html#bedreliv">Guide</a><a class="knapp sekundaer" href="https://github.com/runevangen/BedreLiv">Kode</a></div>
+    </li>
+    <li>
+      <h2>Meo32</h2>
+      <p>MEO 3.2, en guide for mikrobølgeovn.</p>
+      <div class="lenker"><a class="knapp" href="https://meo32.netlify.app">Åpne</a><a class="knapp sekundaer" href="arkitektur.html#meo32">Guide</a></div>
+    </li>
+    <li>
+      <h2>C64-scroller</h2>
+      <p>Eldre enkeltfil-utgave av pizzaplanleggeren. Repoet heter c64scrollerdemo.</p>
+      <div class="lenker"><a class="knapp" href="https://c64scroller.netlify.app">Åpne</a><a class="knapp sekundaer" href="arkitektur.html#c64">Guide</a><a class="knapp sekundaer" href="https://github.com/runevangen/c64scrollerdemo">Kode</a></div>
     </li>
     <li>
       <h2>Oppgavetavle</h2>
       <p>Tavle for oppgaver. Beskrivelse kommer.</p>
-      <div class="lenker"><a href="https://oppgavetavle.netlify.app">Åpne</a></div>
+      <div class="lenker"><a class="knapp" href="https://oppgavetavle.netlify.app">Åpne</a></div>
     </li>
     <li>
-      <h2>Meo32</h2>
-      <p>Beskrivelse kommer.</p>
-      <div class="lenker"><a href="https://meo32.netlify.app">Åpne</a></div>
+      <h2>Roskilde</h2>
+      <p>Prosjekt om Roskilde-festivalen.</p>
+      <div class="lenker"><a class="knapp" href="https://github.com/runevangen/Roskilde">Kode</a></div>
     </li>
     <li>
       <h2>Sound</h2>
       <p>Beskrivelse kommer.</p>
-      <div class="lenker"><a href="https://github.com/runevangen/Sound">Kode</a></div>
+      <div class="lenker"><a class="knapp" href="https://github.com/runevangen/Sound">Kode</a></div>
     </li>
     <li>
       <h2>Tiny Little Me</h2>
       <p>Beskrivelse kommer.</p>
-      <div class="lenker"><a href="https://github.com/runevangen/tinylittleme">Kode</a></div>
+      <div class="lenker"><a class="knapp" href="https://github.com/runevangen/tinylittleme">Kode</a></div>
     </li>
   </ul>
   <footer>Ingen innlogging, ingen sporing. Bare lenker.</footer>
