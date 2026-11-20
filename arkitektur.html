@@ -10,7 +10,7 @@
 <main>
   <a class="tilbake" href="./">← Alle prosjekter</a>
   <h1>Arkitektur og guider</h1>
-  <p class="ingress">Hvordan appene er bygget, hvilke API-er de bruker og hvordan du kommer i gang. Alt er lest fra selve koden.</p>
+  <p class="ingress">Hvordan appene er bygget, hvilke API-er og tjenester de bruker, hvordan arbeidet foregår og hvordan du kommer i gang. Alt er lest fra selve koden.</p>
 
   <ul class="innhold">
     <li><a href="#prinsipper">Prinsipper</a></li>
@@ -55,7 +55,16 @@
       <li><strong>Hemmeligheter bare i Netlify.</strong> Ingen nøkler i repoet.</li>
       <li><strong>Tester før utlegging.</strong> Der det finnes tester, kjører de som port, og push til <code>main</code> er det som legger ut til produksjon.</li>
     </ul>
-    <p>Denne samlesiden følger samme linje: tre statiske filer (<code>index.html</code>, <code>arkitektur.html</code>, <code>stil.css</code>), ingen backend.</p>
+    <h3>Tjenester som går igjen</h3>
+    <div class="tabell"><table>
+      <tr><th>Tjeneste</th><th>Brukes til</th></tr>
+      <tr><td>GitHub</td><td>Kode, issues og pull requests. GitHub Actions kjører tester. GitHub Pages legger ut Tiny Little Me.</td></tr>
+      <tr><td>Netlify</td><td>Hosting av nesten alle appene. Functions er backend, Blobs er enkel lagring. Push til <code>main</code> legger ut.</td></tr>
+      <tr><td>Supabase</td><td>Database og innlogging for Orgit, Sportsbibelen og tilbakemeldingene i Tiny Little Me.</td></tr>
+      <tr><td>Claude (Anthropic)</td><td>To roller. I appene: Claude API (Dagslogg, Sportsbibelens quiz). Under utvikling: Claude Code med faste regler i <code>CLAUDE.md</code>, agenter og hooks.</td></tr>
+      <tr><td>Playwright</td><td>Nettlesertester i Chromium, i Sportsbibelen, Ultimate Pizza og Tiny Little Me.</td></tr>
+    </table></div>
+    <p>Denne samlesiden følger samme linje: tre statiske filer (<code>index.html</code>, <code>arkitektur.html</code>, <code>stil.css</code>), ingen backend, ingen tester. Push til <code>main</code> legger ut via Netlify.</p>
   </section>
 
   <section class="app" id="orgit">
@@ -82,6 +91,13 @@
       <li>Lag en tavle for selskapet og legg inn oppgaver og gjester.</li>
       <li>Plasser gjestene ved bordene og send invitasjoner.</li>
       <li>Følg med på hvem som har sagt ja, og se allergiene samlet.</li>
+    </ul>
+    <h3>Arbeidsflyt og integrasjoner</h3>
+    <ul class="liste">
+      <li><strong>Utlegging:</strong> Netlify (<code>orgit</code>) uten byggesteg. Overskrifter settes i <code>_headers</code>.</li>
+      <li><strong>Databaseendringer:</strong> SQL-filene i <code>sql/</code> kjøres for hånd i Supabase, i rekkefølgen over.</li>
+      <li><strong>Ideer:</strong> <code>BACKLOG.md</code>, bygget på research av andre planleggingsapper (Zola, Joy, WeddingWire, RSVPify, Planning Pod). Neste opp er budsjett og leverandører, og sortering av oppgavekort.</li>
+      <li><strong>Tester og CI:</strong> ingen ennå.</li>
     </ul>
   </section>
 
@@ -115,6 +131,15 @@
       <li>Trykk på et måltid for å rette det, sveip til venstre for å slette.</li>
       <li>«Mer»-fanen har profil, ukesoppsummering og eksport til å lime inn i en chat.</li>
     </ul>
+    <h3>Arbeidsflyt og integrasjoner</h3>
+    <ul class="liste">
+      <li><strong>Utlegging:</strong> Netlify (<code>dagslogg</code>) med <code>netlify.toml</code> som låser publiseringsmappen til <code>public/</code>.</li>
+      <li><strong>Versjoner:</strong> versjonsnummer i topplinjen som åpner endringsloggen (<code>changelog.js</code>), og en egen <code>guide.js</code> i appen.</li>
+      <li><strong>Planlegging:</strong> <code>BACKLOG.md</code> samler det som er besluttet, men ikke bygget. Innspill på kostholdet er bygget i to steg (dagen, og dagene du velger selv).</li>
+      <li><strong>Integrasjoner:</strong> Claude API for estimering og innspill, og en iPhone-snarvei som sender veiing fra Apple Helse til <code>/api/helse</code>.</li>
+      <li><strong>Verktøy:</strong> <code>verktoy/lag-ikon.mjs</code> lager appikonene.</li>
+      <li><strong>Tester og CI:</strong> ingen workflow i repoet.</li>
+    </ul>
   </section>
 
   <section class="app" id="pizza">
@@ -140,6 +165,15 @@
       <tr><td><code>/api/mcp</code></td><td>MCP-serveren. Se neste seksjon.</td></tr>
     </table></div>
     <p>Lagring: Netlify Blobs, med egne lagre for bakinger, innstillinger, forslag, tilbakemeldinger, mel, pizzatid og brukere. Ingen eksterne API-er.</p>
+    <h3>Arbeidsflyt og integrasjoner</h3>
+    <ul class="liste">
+      <li><strong>Utlegging:</strong> Netlify (<code>ultimatepizza</code>), bygger med esbuild.</li>
+      <li><strong>Tester i GitHub Actions</strong> («Tester»): kjører på hver push, hver pull request, for hånd, og hver natt kl. 03.15 (UTC). Nettlesertesten bruker Python 3.11 og Playwright med Chromium (<code>test_regression.py</code>).</li>
+      <li><strong>Nattlig stabilitetssjekk:</strong> kjører suiten tre ganger og skiller ustabile tester fra reelle feil. Loggene lagres som artefakter.</li>
+      <li><strong>Claude Code:</strong> en stoppkrok (<code>.claude/hooks/testport.sh</code>) kjører de tre node-testlagene hver gang Claude sier «ferdig», og sender feilene tilbake. Agenten <code>testvokter</code> (Sonnet, kun lesetilgang) kjører hele suiten og forklarer hva som brakk. <code>.mcp.json</code> tilbyr den lokale MCP-serveren automatisk.</li>
+      <li><strong>Versjoner og planer:</strong> <code>changelog.js</code> (vises i appen), <code>CHANGELOG-ARKIV.md</code> og <code>BACKLOG.md</code>.</li>
+      <li><strong>Integrasjoner:</strong> MCP-klienter (Claude, ChatGPT, Gemini, Grok) og kalenderfiler (<code>.ics</code>) som importeres i kalenderappen din.</li>
+    </ul>
   </section>
 
   <section class="app" id="mcp">
@@ -198,6 +232,20 @@
       <li>Sveip mot venstre for fotballen, mot høyre tilbake.</li>
       <li>Stjerne ved et lag gjør det til favoritt. Logg inn for å følge det på tvers av telefoner.</li>
     </ul>
+    <h3>Arbeidsflyt og integrasjoner</h3>
+    <ul class="liste">
+      <li><strong>Alt går gjennom pull request.</strong> <code>main</code> er beskyttet, og sjekken <code>regresjonstester</code> må være grønn. Prosjektet har to utviklere.</li>
+      <li><strong>To porter:</strong> GitHub Actions kjører enhets-, funksjons- og nettlesertester. Netlify kjører de to første som byggekommando. Feiler de, publiseres ingenting og forrige utgave står.</li>
+      <li><strong>Stempel på utleggingen:</strong> byggekommandoen skriver ned hvilken commit som rulles ut, så portalen kan svare på «ser jeg den nyeste versjonen?».</li>
+      <li><strong>Dokumentasjon:</strong> <code>CLAUDE.md</code> har reglene som gjelder nå. Begrunnelsene står som beslutningsnotater i <code>docs/adr/</code>, og historien i <code>docs/hendelser.md</code>.</li>
+      <li><strong>Backlog:</strong> GitHub-issues.</li>
+      <li><strong>To Claude-rutiner</strong> med korte prompter, mens reglene ligger i repoet (<code>docs/agenter/</code>) så de kan rettes via pull request:
+        <ul class="liste">
+          <li><em>Issue-agenten</em> kjører hver tredje dag om morgenen. Den gjør issues tydelige og stiller spørsmål med svaralternativer. Den bygger ingenting.</li>
+          <li><em>Nattutvikleren</em> kjører hver tredje dag om kvelden, dagen etter. Den bygger neste klare issue og har en pull request og en testlenke klar. Den fletter aldri selv.</li>
+        </ul></li>
+      <li><strong>Integrasjoner:</strong> GitHub, Netlify, Supabase, Claude API, WordPress, TheSportsDB og OpenStreetMap. I admin-portalen finnes også sonder som prøver Sportmonks og uoffisielle fantasy-API-er, som ikke når leserne.</li>
+    </ul>
   </section>
 
   <section class="app" id="tonsofrock">
@@ -221,6 +269,14 @@
       <tr><td>Last.fm</td><td>Bandinfo via <code>ws.audioscrobbler.com</code>.</td></tr>
       <tr><td>Spotify</td><td>Bare lenker til <code>open.spotify.com</code>, ingen API-kall.</td></tr>
     </table></div>
+    <h3>Arbeidsflyt og integrasjoner</h3>
+    <ul class="liste">
+      <li><strong>Utlegging:</strong> Netlify auto-deployer fra <code>main</code>. Appen er ikke i bruk av publikum nå, så endringer kan gå rett til <code>main</code>.</li>
+      <li><strong>Overlevering:</strong> <code>STATUS.md</code> er startpunktet for å fortsette arbeidet i Claude Code, med arkitektur, fallgruver og datamodell.</li>
+      <li><strong>Admin:</strong> passordet ligger i Netlify og brukes av alle tre funksjonene.</li>
+      <li><strong>Integrasjoner:</strong> Leaflet (cdnjs), OpenStreetMap, Last.fm og Spotify-lenker.</li>
+      <li><strong>Tester og CI:</strong> ingen workflow i repoet.</li>
+    </ul>
   </section>
 
   <section class="app" id="tinylittleme">
@@ -247,6 +303,20 @@
       <li>«NYTT»-menyen viser hva som er endret, med trinn du kan prøve.</li>
       <li>Du melder feil og ønsker fra spillet.</li>
     </ul>
+    <h3>Arbeidsflyt og integrasjoner</h3>
+    <ul class="liste">
+      <li><strong>Utlegging:</strong> push til <code>main</code>, og GitHub Pages bygger derfra. Claude Code pusher uten å spørre når testene er grønne og versjonen er økt.</li>
+      <li><strong>CI</strong> («Sjekk av main», på <code>main</code> og pull requests): <code>npm test</code>, deretter en oppstartstest som åpner spillet i Playwright og krever at det starter uten feil. Den siste fanger det <code>npm test</code> ikke ser, som en tom modul. Det finnes også en standard workflow for publisering som npm-pakke.</li>
+      <li><strong>Regler i <code>CLAUDE.md</code>:</strong> versjonsnummer økes for hver endring og får en linje i <code>CHANGELOG.md</code>. Nye nivåer må gås med en rutevalidator. Alt sjekkes visuelt med Playwright i iPhone 14-modus. Hver synlig endring får en rad i «NYTT»-menyen med trinn å prøve.</li>
+      <li><strong>Tilbakemeldingsløkka:</strong>
+        <ul class="liste">
+          <li>Testere trykker «Send til Claude» i spillet med en tester-kode. Rapporten (versjon, brett, enhet, siste hendelser) havner i Supabase.</li>
+          <li>Claude leser nye meldinger med Supabase-verktøyene, rangerer dem (krasj først, så feil flere har meldt, så enkeltfeil, så ønsker) og legger dem i veikartet.</li>
+          <li>En «runner» (<code>tools/roadmap_runner.workflow.js</code>) tar inntil fem punkter om gangen.</li>
+          <li>Når en sak er rettet og lagt ut, får testeren et automatisk svar som vises i «RETTELSER» på hovedmenyen, med lenke til brettet. Svaret gjengir aldri det testeren skrev.</li>
+        </ul></li>
+      <li><strong>Sikkerhet:</strong> spillet bruker bare Supabases offentlige nøkkel. Radnivå-sikring gjør at den bare kan sette inn nye rader, og bare med en gyldig, aktiv tester-kode.</li>
+    </ul>
   </section>
 
   <section class="app" id="bedreliv">
@@ -272,6 +342,13 @@
       <li>Før vekt og reps for hver øvelse. Ett kort er åpent om gangen.</li>
       <li>«Vis utførelse» viser teknikken og den vanligste feilen.</li>
     </ul>
+    <h3>Arbeidsflyt og integrasjoner</h3>
+    <ul class="liste">
+      <li><strong>Utlegging:</strong> Netlify (<code>bedreliv</code>).</li>
+      <li><strong>Tester:</strong> Rundt tjue testfiler i <code>tester/</code>. Enhetstester, nettlesertester og sjekker for blant annet utskrift, størrelser, versjon og fokus. En testrigg starter appen lokalt med en erstatning for Blobs, så testene ikke trenger nett.</li>
+      <li><strong>Versjoner:</strong> <code>changelog.js</code>, og <code>BACKLOG.md</code> med avgjørelser som venter på meg (repoets synlighet og samarbeid med en venn).</li>
+      <li><strong>Integrasjoner:</strong> ingen utover Netlify.</li>
+    </ul>
   </section>
 
   <section class="app" id="meo32">
@@ -279,12 +356,20 @@
     <p><span class="merke">én HTML-fil</span><span class="merke">ingen backend</span><span class="merke">privat repo</span></p>
     <p>«MEO 3.2 – Mikrobølgeovn-guide». Hele guiden er <code>index.html</code>, rundt 47 kB.</p>
     <p>Ingen funksjoner, ingen lagring og ingen API-er.</p>
+    <h3>Arbeidsflyt og integrasjoner</h3>
+    <ul class="liste">
+      <li><strong>Utlegging:</strong> Netlify (<code>meo32</code>). Siden er live.</li>
+      <li><strong>Planlegging:</strong> <code>BACKLOG.md</code>. Første punkt er å gå fra én guide til en samling av guider og bruksanvisninger.</li>
+      <li><strong>Integrasjoner, tester og CI:</strong> ingen.</li>
+    </ul>
   </section>
 
   <section class="app" id="c64">
     <h2>C64-scroller</h2>
     <p><span class="merke">én HTML-fil</span><span class="merke">ingen backend</span><span class="merke">offentlig repo</span></p>
     <p>C64 old school demo, tittel «Corruption :: 2026 Demo». Hele demoen er én fil, <code>index.html</code>, rundt 26 kB. Ingen funksjoner, ingen lagring og ingen API-er.</p>
+    <h3>Arbeidsflyt og integrasjoner</h3>
+    <p>Utlegging via Netlify (<code>c64scroller</code>) fra <code>main</code>. Ingen integrasjoner, tester eller CI.</p>
   </section>
 
   <footer>Hemmelige nøkler ligger i Netlify, aldri i repoene.</footer>
