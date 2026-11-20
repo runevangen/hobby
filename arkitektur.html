@@ -20,6 +20,7 @@
     <li><a href="#mcp">Pizza-MCP</a></li>
     <li><a href="#sportsbibelen">Sportsbibelen</a></li>
     <li><a href="#tonsofrock">Tons of Rock</a></li>
+    <li><a href="#tinylittleme">Tiny Little Me</a></li>
     <li><a href="#bedreliv">Bedre liv</a></li>
     <li><a href="#meo32">Meo32</a></li>
     <li><a href="#c64">C64-scroller</a></li>
@@ -60,7 +61,7 @@
   <section class="app" id="orgit">
     <h2>Orgit</h2>
     <p><span class="merke">Supabase</span><span class="merke">én HTML-fil</span><span class="merke">offentlig repo</span></p>
-    <p>Organiseringsapp for selskaper: oppgaver, gjester, bordplassering, invitasjoner, bordkort, svar og allergier.</p>
+    <p>Organiseringsapp som låner fra Trello++, med planleggingselementer for selskaper: gjesteliste, bordplassering, innkalling og oversikt over allergier. Samme app ligger også på adressen oppgavetavle.netlify.app, som var det opprinnelige navnet.</p>
     <h3>Arkitektur</h3>
     <ul class="liste">
       <li>Hele appen er <code>index.html</code> pluss to biblioteker i <code>vendor/</code>: Supabase-klienten og Sortable (dra og slipp).</li>
@@ -222,6 +223,32 @@
     </table></div>
   </section>
 
+  <section class="app" id="tinylittleme">
+    <h2>Tiny Little Me</h2>
+    <p><span class="merke">Three.js</span><span class="merke">GitHub Pages</span><span class="merke">Supabase</span><span class="merke">offentlig repo</span></p>
+    <p>3D-plattformspill i nettleseren: du er krympet og må komme deg fra gulvet til toppen. På sikt skal brettet kunne bygges av bilder du tar av rommet ditt. Navnet er et arbeidsnavn.</p>
+    <h3>Arkitektur</h3>
+    <ul class="liste">
+      <li>Ingen byggesteg: en <code>.js</code>-modul per del (fysikk, bygging, lyd, boss, atmosfære) som <code>index.html</code> laster med versjonsnummer, så spilleren alltid får nyeste.</li>
+      <li>Three.js (MIT) ligger i <code>lib/</code>. Nivåene er <code>.level.json</code>-filer som sjekkes av en løsbarhetsvalidator.</li>
+      <li>Tester med <code>npm test</code> (fysikk og nivåer), en oppstartstest i Playwright som krever at spillet starter uten feil, og CI i GitHub Actions.</li>
+      <li>Utlegging skjer ved push til <code>main</code>. GitHub Pages bygger derfra.</li>
+      <li>Instruksene til Claude Code ligger i <code>CLAUDE.md</code> i repoet, og planen i <code>CONCEPT.md</code> og <code>BACKLOG.md</code>.</li>
+    </ul>
+    <h3>API-er og tjenester</h3>
+    <div class="tabell"><table>
+      <tr><th>Tjeneste</th><th>Hva den gjør her</th></tr>
+      <tr><td>Supabase</td><td>Tilbakemeldinger fra testere (<code>tlm_feedback</code>) og svar til dem (<code>tlm_replies</code>). Svaret vises i «RETTELSER» på hovedmenyen, med lenke til brettet der rettelsen kan sjekkes.</td></tr>
+    </table></div>
+    <p>Ingen andre eksterne API-er og ingen egen backend.</p>
+    <h3>Slik spiller du</h3>
+    <ul class="liste">
+      <li>Åpne spillet på mobil. Styr med stikka og knappene TA, HOPP og GREP. ⚙ åpner innstillingene.</li>
+      <li>«NYTT»-menyen viser hva som er endret, med trinn du kan prøve.</li>
+      <li>Du melder feil og ønsker fra spillet.</li>
+    </ul>
+  </section>
+
   <section class="app" id="bedreliv">
     <h2>Bedre liv</h2>
     <p><span class="merke">Netlify Functions</span><span class="merke">Netlify Blobs</span><span class="merke">offentlig repo</span></p>
@@ -262,7 +289,7 @@
 
   <section class="app">
     <h2>Ikke med ennå</h2>
-    <p>Oppgavetavle, Roskilde, Sound og Tiny Little Me er ikke gjennomgått. De kommer når jeg har lest koden.</p>
+    <p>Roskilde og Sound er ikke gjennomgått. De kommer når jeg har lest koden.</p>
   </section>
 
   <footer>Hemmelige nøkler ligger i Netlify, aldri i repoene.</footer>
